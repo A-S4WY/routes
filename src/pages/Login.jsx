@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import AuthLayout from '../components/AuthLayout.jsx'
+import { passengerLogin } from '../api/auth.ts'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -10,11 +11,17 @@ export default function Login() {
 
   const isFilled = username.trim().length > 0 && password.trim().length > 0
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    // TODO: send { username, password, remember } to your auth API.
-    // On success:
-    // navigate('/dashboard')
+    const response = await passengerLogin(username, password)
+    const bodyJson = await response.json()
+    if (response.status === 201) {
+      // navigate('/dashboard')
+      console.log('Login successful:', bodyJson)
+    }
+    else {
+      console.error('login failed:', bodyJson)
+    }
   }
 
   return (

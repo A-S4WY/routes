@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import AuthLayout from '../components/AuthLayout.jsx'
+import { passengerSignup } from '../api/user.ts'
 
 export default function Signup() {
   const navigate = useNavigate()
@@ -13,11 +14,20 @@ export default function Signup() {
     email.trim().length > 0 &&
     password.trim().length > 0
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    // TODO: send { username, email, password } to your signup API.
-    // On success:
-    // navigate('/login')
+    const passengerInfo = {
+      email: email,
+      // TODO: Get the rest of the passenger information.
+    }
+    const response = await passengerSignup(username, password, passengerInfo)
+    const bodyJson = await response.json()
+    if (response.status === 201) {
+      navigate('/login')
+    }
+    else {
+      console.error('Signup failed:', bodyJson)
+    }
   }
 
   return (
