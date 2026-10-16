@@ -128,6 +128,10 @@
   transition:background .15s ease, color .15s ease;
 }
 
+a.nav-item{
+  text-decoration:none;
+}
+
 .nav-item svg{
   flex-shrink:0;
 }

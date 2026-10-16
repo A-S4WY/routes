@@ -4,7 +4,7 @@ import MapView from '../components/MapView.jsx'
 import RouteList from '../components/RouteList.jsx'
 import { ROUTES } from '../data/routes.js'
 import { DEPOT } from '../config.js'
-import { getRoute } from '../utils/tomtom.js'
+import { getRoute } from '../utils/routing.js'
 import '../dashboard.css'
 
 export default function Dashboard() {
@@ -15,7 +15,7 @@ export default function Dashboard() {
   // Calculate travel time + path for each route once, on mount.
   useEffect(() => {
     ROUTES.forEach((route, index) => {
-      getRoute(DEPOT, { lat: route.lat, lng: route.lng })
+      getRoute(DEPOT, { lat: route.lat, lng: route.lng }, { live: route.active })
         .then((result) => {
           if (result) {
             setRouteData((prev) => ({ ...prev, [index]: result }))
@@ -30,6 +30,7 @@ export default function Dashboard() {
   const routesWithEta = ROUTES.map((route, index) => ({
     ...route,
     eta: routeData[index]?.durationText || null,
+    etaLive: routeData[index]?.isLive || false,
     coordinates: routeData[index]?.coordinates || null,
   }))
 

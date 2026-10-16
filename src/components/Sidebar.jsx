@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import { Home, Route, Truck, Users, ChevronDown, QrCode, FileText, Calendar } from 'lucide-react'
 
 export default function Sidebar() {
@@ -25,13 +26,17 @@ export default function Sidebar() {
         </div>
 
         <ul className="nav-list">
-          <li className="nav-item active">
-            <Home size={16} />
-            <span>Home</span>
+          <li>
+            <NavLink to="/dashboard" className="nav-item">
+              <Home size={16} />
+              <span>Home</span>
+            </NavLink>
           </li>
-          <li className="nav-item">
-            <Route size={16} />
-            <span>Route Setup</span>
+          <li>
+            <NavLink to="/route-setup" className="nav-item">
+              <Route size={16} />
+              <span>Route Setup</span>
+            </NavLink>
           </li>
           <li className="nav-item">
             <Truck size={16} />

@@ -29,7 +29,7 @@ export default function RouteList({ routes, search, onSearchChange, onSelectRout
           >
             <div className="route-item-name">{route.name}</div>
             <div className="route-item-time">Starts at {route.startsAt}</div>
-            {route.eta && <div className="route-item-eta">ETA: {route.eta}</div>}
+            {route.eta && <div className="route-item-eta">ETA: {route.eta}{route.etaLive && ' · live'}</div>}
           </li>
         ))}
       </ul>
