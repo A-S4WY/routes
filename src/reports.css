@@ -1,0 +1,108 @@
+/* ================= REPORTS ================= */
+/* Builds on the shared rs-* (route-setup.css) and fl-* (fleet.css) styles. */
+
+/* Status summary chips (also act as a quick filter) */
+.rr-summary{ display:flex; flex-wrap:wrap; gap:10px; margin:-8px 0 20px; }
+.rr-chip{
+  display:inline-flex;
+  align-items:baseline;
+  gap:6px;
+  padding:7px 14px;
+  border:1px solid transparent;
+  border-radius:999px;
+  font-family:inherit;
+  font-size:13px;
+  cursor:pointer;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.rr-chip strong{ font-size:15px; }
+.rr-chip.critical{ background:#fbdedb; color:#b42318; }
+.rr-chip.warning{ background:#fdf0d2; color:#8a5a00; }
+.rr-chip.info{ background:#e4e4e4; color:#55595d; }
+.rr-chip.ok{ background:#dff3db; color:#1e7a12; }
+.rr-chip:hover{ border-color:currentColor; }
+.rr-chip.on{ border-color:currentColor; box-shadow:0 0 0 2px rgba(0,0,0,.06); }
+
+.rr-live-btn{ display:inline-flex; align-items:center; gap:8px; height:40px; font-size:14px; color:var(--ink); white-space:nowrap; }
+.rr-live-btn:hover:not(:disabled){ background:#1b1b1b; color:#fff; }
+.rr-live-btn:disabled{ opacity:.6; cursor:wait; }
+.fl-add-ghost{ margin-left:auto; }
+.spin{ animation:rr-spin 1s linear infinite; }
+@keyframes rr-spin{ to{ transform:rotate(360deg); } }
+
+/* Status pill */
+.rr-status{
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+  white-space:nowrap;
+}
+.rr-status.critical{ background:#fbdedb; color:#b42318; }
+.rr-status.warning{ background:#fdf0d2; color:#8a5a00; }
+.rr-status.info{ background:#e4e4e4; color:#55595d; }
+.rr-status.ok{ background:#dff3db; color:#1e7a12; }
+
+/* Main table */
+.rr-table-main th:nth-child(1){ width:10%; }
+.rr-table-main th:nth-child(2){ width:12%; }
+.rr-table-main th:nth-child(3){ width:13%; }
+.rr-table-main th:nth-child(4){ width:11%; }
+.rr-table-main th:nth-child(5){ width:40%; }
+.rr-table-main tr.rr-row.critical td:first-child{ box-shadow:inset 4px 0 0 #e5322d; }
+.rr-table-main tr.rr-row.warning td:first-child{ box-shadow:inset 4px 0 0 #f0b33c; }
+.rr-top{ line-height:1.45; }
+.rr-top small{ color:var(--muted); white-space:nowrap; }
+.rm-time small{ color:var(--muted); }
+.rm-time small.late{ color:#b42318; font-weight:600; }
+
+/* Report overlay */
+.rr-panel{ display:flex; flex-direction:column; gap:26px; }
+.rr-panel-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+.rr-panel-head h4{ margin:0; font-size:16px; font-weight:600; }
+.rr-issues{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+.rr-issues li{
+  display:grid;
+  grid-template-columns:18px 1fr auto;
+  align-items:start;
+  gap:10px;
+  padding:10px 14px;
+  border-radius:12px;
+  font-size:13.5px;
+  line-height:1.5;
+}
+.rr-issues li svg{ margin-top:2px; }
+.rr-issues li.critical{ background:#fdeeec; }
+.rr-issues li.critical svg{ color:#b42318; }
+.rr-issues li.warning{ background:#fdf6e6; }
+.rr-issues li.warning svg{ color:#8a5a00; }
+.rr-issues li.info{ background:#ebebea; }
+.rr-issues li.info svg{ color:#6b6f73; }
+.rr-issues li .fl-clear{ white-space:nowrap; color:var(--green-dark); font-weight:600; }
+.rr-legend{ margin:0 0 12px; }
+
+.rr-schedule{ width:100%; table-layout:auto; }
+.rr-schedule th:nth-child(n){ width:auto; }
+.rr-diff{ white-space:nowrap; font-variant-numeric:tabular-nums; }
+.rr-diff small{ margin-left:2px; font-size:12px; }
+.rr-diff.ok small{ color:var(--green-dark); }
+.rr-diff.late small{ color:#8a5a00; font-weight:600; }
+.rr-diff.late-critical small{ color:#b42318; font-weight:700; }
+.rr-diff.early small{ color:#6b6f73; }
+
+@media (max-width:960px){
+  .fl-add-ghost{ margin-left:0; }
+}
+
+/* Completed trips */
+.rr-intro{ margin:-18px 0 18px; }
+.rr-trips th:nth-child(1){ width:10%; }
+.rr-trips th:nth-child(2){ width:12%; }
+.rr-trips th:nth-child(3){ width:11%; }
+.rr-trips th:nth-child(4){ width:13%; }
+.rr-trips th:nth-child(5){ width:40%; }
+.rr-pstate{ font-size:12.5px; font-weight:600; }
+.rr-pstate.ok{ color:#1e7a12; }
+.rr-pstate.bad{ color:#b42318; }
+.rr-pstate.muted{ color:var(--muted); font-weight:400; }

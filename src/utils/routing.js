@@ -7,7 +7,8 @@ import { getRoadPath } from './osrm.js'
 //    (i.e. the route is active right now); otherwise OSRM's typical estimate
 //    is used, so reviewing routes never spends TomTom requests.
 // Each source fails independently, so this never rejects.
-// Returns { durationText, distanceText, coordinates, isRoadPath, isLive }.
+// Returns { durationText, distanceText, coordinates, isRoadPath, isLive, legSeconds }.
+// legSeconds[i] is the drive from point i to point i+1 (null if unavailable).
 export async function getRouteThrough(points, { live = false } = {}) {
   const [path, traffic] = await Promise.allSettled([
     getRoadPath(points),
@@ -27,6 +28,7 @@ export async function getRouteThrough(points, { live = false } = {}) {
     coordinates: road ? road.coordinates : points.map((p) => [p.lng, p.lat]),
     isRoadPath: !!road,
     isLive: !!liveTime,
+    legSeconds: time?.legSeconds?.length === points.length - 1 ? time.legSeconds : null,
   }
 }
 

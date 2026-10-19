@@ -1,0 +1,17 @@
+/* ================= USERS ================= */
+/* Builds on the shared rs-* (route-setup.css) and fl-* (fleet.css) styles. */
+
+.us-table th:nth-child(1){ width:11%; }
+.us-table th:nth-child(2){ width:14%; }
+.us-table th:nth-child(3){ width:20%; }
+.us-table th:nth-child(4){ width:15%; }
+.us-table th:nth-child(5){ width:13%; }
+.us-table th:nth-child(6){ width:19%; }
+.us-table td.us-email{ overflow-wrap:anywhere; }
+.us-phone{ white-space:nowrap; font-variant-numeric:tabular-nums; }
+
+.us-status{ display:inline-flex; align-items:center; gap:10px; white-space:nowrap; }
+.us-dot{ width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.us-status.subscribed .us-dot{ background:var(--green); }
+.us-status.unsubscribed .us-dot{ background:#e5322d; }
+.us-none{ color:var(--muted); }

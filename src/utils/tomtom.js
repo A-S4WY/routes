@@ -2,6 +2,8 @@ import { TOMTOM_API_KEY } from '../config.js'
 
 // Live-traffic results are reused for this long before asking TomTom again.
 const TRAFFIC_CACHE_MS = 60 * 1000
+// Give up on a request after this long.
+const TIMEOUT_MS = 10_000
 
 // key -> { promise, expires }. Storing the promise (not just the result) means
 // identical requests made at the same moment share a single API call.
@@ -14,7 +16,7 @@ function cacheKey(points) {
 // Asks TomTom's Routing API for the live-traffic travel time through the
 // given points, in order. Only the summary is requested — the route line is
 // drawn separately (see osrm.js). Results are cached for a minute per set of
-// points. Returns { seconds, meters }.
+// points. Returns { seconds, meters, legSeconds } (legSeconds[i] = point i → i+1).
 // Docs: https://developer.tomtom.com/routing-api/documentation
 export function getTravelTime(points) {
   const key = cacheKey(points)
@@ -40,7 +42,7 @@ async function fetchTravelTime(locations) {
     `https://api.tomtom.com/routing/1/calculateRoute/${locations}/json` +
     `?key=${TOMTOM_API_KEY}&traffic=true&routeRepresentation=summaryOnly`
 
-  const res = await fetch(url)
+  const res = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT_MS) })
   if (!res.ok) {
     throw new Error(`Routing API returned ${res.status}`)
   }
@@ -48,5 +50,9 @@ async function fetchTravelTime(locations) {
   const summary = data?.routes?.[0]?.summary
   if (!summary) throw new Error('No route found')
 
-  return { seconds: summary.travelTimeInSeconds, meters: summary.lengthInMeters }
+  return {
+    seconds: summary.travelTimeInSeconds,
+    meters: summary.lengthInMeters,
+    legSeconds: (data.routes[0].legs ?? []).map((leg) => leg.summary.travelTimeInSeconds),
+  }
 }

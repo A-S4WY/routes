@@ -1,0 +1,30 @@
+/* ================= ROUTE MANAGEMENT ================= */
+/* Builds on the shared rs-* (route-setup.css) and fl-* (fleet.css) styles. */
+
+.rm-table th:nth-child(1){ width:9%; }
+.rm-table th:nth-child(2){ width:9%; }
+.rm-table th:nth-child(3){ width:10%; }
+.rm-table th:nth-child(4){ width:9%; }
+.rm-table th:nth-child(5){ width:13%; }
+.rm-table th:nth-child(6){ width:8%; }
+.rm-table th:nth-child(7){ width:9%; }
+.rm-table th:nth-child(8){ width:5%; }
+.rm-table th:nth-child(9){ width:7%; }
+.rm-table th:nth-child(10){ width:7%; }
+.rm-table th:nth-child(11){ width:7%; }
+.rm-table td.trunc{ max-width:0; }
+.rm-time{ white-space:nowrap; font-variant-numeric:tabular-nums; }
+.us-none{ color:var(--muted); }
+
+.rm-saved{ display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
+.rm-saved button{
+  padding:0 4px;
+  border:none;
+  background:none;
+  font-size:18px;
+  line-height:1;
+  color:inherit;
+  cursor:pointer;
+}
+
+.rm-type{ font-size:13px; white-space:nowrap; }

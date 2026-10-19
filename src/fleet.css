@@ -1,0 +1,204 @@
+/* ================= FLEET MANAGEMENT ================= */
+/* Builds on the shared rs-* styles in route-setup.css. */
+
+.fl-toolbar{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:32px;
+}
+.fl-filters{ flex-shrink:0; }
+/* Search shrinks first so Filters and Add stay on the same row. */
+.fl-search{ flex:0 1 360px; min-width:160px; }
+.fl-search::-webkit-search-cancel-button{ cursor:pointer; }
+.fl-add{ margin-left:auto; min-width:0; width:208px; flex-shrink:1; }
+
+/* Filters dropdown */
+.fl-filters{ position:relative; }
+/* Round icon-only button */
+.fl-filter-btn{
+  position:relative;
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:1px solid #1b1b1b;
+  border-radius:50%;
+  background:transparent;
+  color:var(--ink);
+  cursor:pointer;
+  transition:background .15s ease, color .15s ease, border-color .15s ease;
+}
+.fl-filter-btn:hover,
+.fl-filter-btn.open{ background:#1b1b1b; color:#fff; }
+.fl-filter-btn:focus-visible{ outline:2px solid var(--green); outline-offset:2px; }
+.fl-filter-btn.on{ border-color:var(--green); color:var(--green-dark); }
+.fl-filter-btn.on:hover,
+.fl-filter-btn.on.open{ background:var(--green); color:#111; }
+.fl-badge{
+  position:absolute;
+  top:-4px;
+  right:-4px;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  border-radius:999px;
+  background:var(--green);
+  color:#fff;
+  font-size:11px;
+  font-weight:600;
+  line-height:18px;
+  text-align:center;
+}
+
+.fl-popover{
+  position:absolute;
+  top:calc(100% + 8px);
+  left:0;
+  z-index:20;
+  width:260px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  background:#f4f4f3;
+  border-radius:18px;
+  box-shadow:0 12px 32px rgba(0,0,0,.18);
+}
+.fl-popover-title{ font-size:15px; font-weight:600; }
+.fl-popover select.rs-input{ width:100%; cursor:pointer; }
+.fl-check{ display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer; }
+.fl-check input{ accent-color:var(--green); width:15px; height:15px; }
+.fl-clear{
+  align-self:flex-start;
+  padding:0;
+  background:none;
+  border:none;
+  font-family:inherit;
+  font-size:13px;
+  color:var(--muted);
+  text-decoration:underline;
+  cursor:pointer;
+}
+.fl-clear:disabled{ opacity:.4; cursor:default; text-decoration:none; }
+
+/* Table: full width, column widths for this page */
+/* Fits the available width; long values wrap instead of forcing a scrollbar. */
+.fl-table{ width:100%; table-layout:auto; }
+.fl-table td{ height:auto; min-height:40px; padding-block:10px; }
+.fl-table th:nth-child(n){ width:auto; }
+.fl-table th:nth-child(1){ width:16%; }
+.fl-table th:nth-child(2){ width:15%; }
+.fl-table th:nth-child(3){ width:11%; }
+.fl-table th:nth-child(4){ width:14%; }
+.fl-table th:nth-child(5){ width:13%; }
+.fl-table th:nth-child(6){ width:19%; }
+.fl-table th:first-child,
+.fl-table td:first-child{ padding-left:12px; }
+.fl-table td.fl-plate{ white-space:nowrap; color:#55595d; unicode-bidi:plaintext; text-align:left; }
+.fl-table td.fl-missing{ color:#c0392b; }
+
+/* Modal form fields */
+.fl-pair{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.fl-pair .rs-input{ width:100%; min-width:0; }
+.fl-field{ display:flex; flex-direction:column; gap:6px; }
+.fl-field-label{ font-size:13px; color:var(--muted); padding-left:6px; }
+.fl-field-label .rs-req{ margin-left:4px; }
+.fl-needed .fl-file-btn{ border-color:#e5322d; }
+.fl-needed .fl-file-names{ color:#e5322d; }
+.fl-required-note{ margin:4px 0 0; font-size:13px; color:#c0392b; }
+.fl-required-note .rs-req{ margin:0; }
+.fl-required-note.done{ color:var(--green-dark); }
+.fl-file{ display:flex; align-items:center; gap:12px; min-width:0; }
+.fl-file-btn{ display:inline-flex; align-items:center; flex-shrink:0; font-size:14px; height:38px; padding:0 20px; }
+.fl-file-btn:hover{ background:#1b1b1b; color:#fff; }
+.fl-file-names{ font-size:13px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.fl-confirm{ margin:0; font-size:14px; line-height:1.5; }
+
+/* Clickable rows */
+.fl-row{ cursor:pointer; }
+.fl-row:hover td{ background:#dff3db !important; }
+.fl-row:focus-visible{ outline:2px solid var(--green); outline-offset:-2px; }
+
+/* Vehicle details modal */
+.fl-details{
+  display:grid;
+  grid-template-columns:minmax(0, 1.6fr) minmax(220px, 1fr);
+  gap:24px;
+}
+.fl-gallery{ display:flex; flex-direction:column; gap:10px; min-width:0; }
+.fl-viewer{
+  aspect-ratio:4 / 3;
+  border-radius:16px;
+  overflow:hidden;
+  background:#e4e4e4;
+  display:grid;
+  place-items:center;
+}
+.fl-viewer img{ width:100%; height:100%; object-fit:cover; }
+.fl-noimg{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  color:#8d8983;
+  font-size:13px;
+  text-align:center;
+  padding:12px;
+}
+.fl-thumbs{ display:flex; gap:8px; overflow-x:auto; padding-bottom:2px; }
+.fl-thumb{
+  width:72px; height:54px;
+  flex-shrink:0;
+  padding:0;
+  border:2px solid transparent;
+  border-radius:10px;
+  overflow:hidden;
+  background:#e4e4e4;
+  color:#8d8983;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+}
+.fl-thumb img{ width:100%; height:100%; object-fit:cover; }
+.fl-thumb.on{ border-color:var(--green); }
+
+.fl-info{ display:flex; flex-direction:column; gap:20px; min-width:0; }
+.fl-info dl{
+  margin:0;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:10px 16px;
+  font-size:14px;
+}
+.fl-info dt{ color:var(--muted); }
+.fl-info dd{ margin:0; font-weight:500; unicode-bidi:plaintext; text-align:left; }
+.fl-license{ display:flex; flex-direction:column; gap:8px; }
+.fl-license .fl-field-label{ padding-left:0; }
+.fl-license p{ margin:0; font-size:14px; }
+.fl-license-img{ display:block; border-radius:12px; overflow:hidden; background:#e4e4e4; }
+.fl-license-img img{ display:block; width:100%; max-height:180px; object-fit:contain; }
+.fl-license-file{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  border:1px solid #cfcac6;
+  border-radius:12px;
+  font-size:14px;
+  min-width:0;
+}
+.fl-license-file span{ flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.fl-license-file a{ color:var(--ink); display:grid; }
+.fl-license-file a:hover{ color:var(--green-dark); }
+.fl-missing{ color:#c0392b; }
+
+@media (max-width:700px){
+  .fl-details{ grid-template-columns:1fr; }
+}
+
+@media (max-width:960px){
+  .fl-toolbar{ flex-wrap:wrap; }
+  .fl-add{ margin-left:0; }
+}

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 // Without onSubmit the modal is view-only and shows a single Close button.
-export default function Modal({ title, onClose, onSubmit, submitLabel = 'Save', canSubmit = true, wide = false, children }) {
+export default function Modal({ title, onClose, onSubmit, submitLabel = 'Save', cancelLabel = 'Cancel', canSubmit = true, wide = false, children }) {
   useEffect(() => {
     const onKey = (e) => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', onKey)
@@ -22,7 +22,7 @@ export default function Modal({ title, onClose, onSubmit, submitLabel = 'Save', 
           <div className="rs-modal-actions">
             {onSubmit ? (
               <>
-                <button type="button" className="rs-btn-ghost" onClick={onClose}>Cancel</button>
+                <button type="button" className="rs-btn-ghost" onClick={onClose}>{cancelLabel}</button>
                 <button type="submit" className="rs-btn" disabled={!canSubmit}>{submitLabel}</button>
               </>
             ) : (

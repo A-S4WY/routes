@@ -3,18 +3,23 @@
 // (~1 request/second) — point OSRM_URL at your own instance for production.
 // Docs: https://project-osrm.org/docs/v5.24.0/api/#route-service
 const OSRM_URL = 'https://router.project-osrm.org'
+// Give up on a request after this long (the demo server sometimes hangs).
+const TIMEOUT_MS = 10_000
 
 // Road geometry doesn't change, so paths are kept for the whole session.
 const pathCache = new Map()
 
 // Returns the driving route through the given points, in order:
-// { coordinates, seconds, meters } — coordinates are [lng, lat] pairs ready
-// for a MapLibre GeoJSON LineString; seconds is a typical (no-traffic) estimate.
+// { coordinates, seconds, meters, legSeconds } — coordinates are [lng, lat]
+// pairs ready for a MapLibre GeoJSON LineString; seconds is a typical
+// (no-traffic) estimate; legSeconds[i] is the drive from point i to point i+1.
 export function getRoadPath(points) {
   const coords = points.map((p) => `${p.lng.toFixed(5)},${p.lat.toFixed(5)}`).join(';')
   if (pathCache.has(coords)) return pathCache.get(coords)
 
-  const promise = fetch(`${OSRM_URL}/route/v1/driving/${coords}?overview=full&geometries=geojson`)
+  const promise = fetch(`${OSRM_URL}/route/v1/driving/${coords}?overview=full&geometries=geojson`, {
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  })
     .then((res) => {
       if (!res.ok) throw new Error(`OSRM returned ${res.status}`)
       return res.json()
@@ -23,7 +28,12 @@ export function getRoadPath(points) {
       const route = data?.routes?.[0]
       const coordinates = route?.geometry?.coordinates
       if (data?.code !== 'Ok' || !coordinates?.length) throw new Error(`OSRM: ${data?.code || 'no route'}`)
-      return { coordinates, seconds: route.duration, meters: Math.round(route.distance) }
+      return {
+        coordinates,
+        seconds: route.duration,
+        meters: Math.round(route.distance),
+        legSeconds: (route.legs ?? []).map((leg) => leg.duration),
+      }
     })
     .catch((err) => {
       pathCache.delete(coords) // allow a retry next time

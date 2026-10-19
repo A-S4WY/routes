@@ -11,6 +11,7 @@ const MapView = forwardRef(function MapView({ routes }, ref) {
   const containerRef = useRef(null)
   const mapRef = useRef(null)
   const markersRef = useRef([])
+  const stopMarkersRef = useRef([])
 
   // Initialize the map once on mount
   useEffect(() => {
@@ -82,11 +83,36 @@ const MapView = forwardRef(function MapView({ routes }, ref) {
     else map.once('load', addMarkers)
   }, [routes])
 
-  // Let the parent (Dashboard) tell the map to fly to a route and
-  // draw its actual path once TomTom's routing geometry is available.
+  // Let the parent (Dashboard) tell the map to fly to a route, draw its path
+  // and show its stops.
   useImperativeHandle(ref, () => ({
     focusRoute(lat, lng) {
       mapRef.current?.flyTo({ center: [lng, lat], zoom: 14 })
+    },
+    // Numbered pins for a route's stops ([{ name, location }]); zooms to fit them.
+    showStops(stops) {
+      const map = mapRef.current
+      if (!map) return
+      stopMarkersRef.current.forEach((marker) => marker.remove())
+      stopMarkersRef.current = stops.map((stop, i) => {
+        const el = document.createElement('div')
+        el.className = 'map-marker-stop'
+        el.textContent = i + 1
+        return new maplibregl.Marker({ element: el })
+          .setLngLat([stop.location.lng, stop.location.lat])
+          .setPopup(new maplibregl.Popup({ offset: 16 }).setText(`${i + 1}. ${stop.name}`))
+          .addTo(map)
+      })
+      if (stops.length) {
+        const bounds = new maplibregl.LngLatBounds()
+        stops.forEach((s) => bounds.extend([s.location.lng, s.location.lat]))
+        map.fitBounds(bounds, { padding: 70, maxZoom: 15 })
+      }
+    },
+    clearRoute() {
+      stopMarkersRef.current.forEach((marker) => marker.remove())
+      stopMarkersRef.current = []
+      mapRef.current?.getSource(ROUTE_SOURCE_ID)?.setData({ type: 'Feature', geometry: { type: 'LineString', coordinates: [] } })
     },
     showRoutePath(coordinates) {
       const map = mapRef.current

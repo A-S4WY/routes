@@ -1,0 +1,118 @@
+/* ================= CALENDAR ================= */
+/* Builds on the shared rs-* (route-setup.css) and fl-* (fleet.css) styles. */
+
+.cal-nav{ display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:18px; }
+.cal-arrow{
+  width:40px; height:40px;
+  display:grid; place-items:center;
+  border:1px solid #1b1b1b;
+  border-radius:50%;
+  background:transparent;
+  color:var(--ink);
+  cursor:pointer;
+}
+.cal-arrow:hover{ background:#1b1b1b; color:#fff; }
+.cal-date{ width:170px; height:40px; cursor:pointer; }
+.cal-today{ height:40px; font-size:14px; }
+.cal-today:disabled{ opacity:.45; cursor:default; }
+.cal-heading{ margin:0 0 0 8px; font-size:18px; font-weight:500; }
+
+/* Week strip */
+.cal-week{ display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:8px; margin-bottom:22px; max-width:820px; }
+.cal-week button{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+  padding:10px 4px;
+  border:1px solid #e0dcd8;
+  border-radius:14px;
+  background:#fff;
+  font-family:inherit;
+  color:var(--ink);
+  cursor:pointer;
+  transition:border-color .15s ease, background .15s ease;
+}
+.cal-week button:hover{ border-color:#1b1b1b; }
+.cal-week button.today .cal-dm{ color:var(--green-dark); }
+.cal-week button.on{ background:var(--green); border-color:var(--green); }
+.cal-week button.on .cal-dm{ color:#111; }
+.cal-wd{ font-size:12px; color:var(--muted); }
+.cal-week button.on .cal-wd{ color:#111; }
+.cal-dm{ font-size:20px; font-weight:600; line-height:1.2; }
+.cal-count{ font-size:11px; color:#55595d; }
+.cal-count.zero{ color:#a7a39e; }
+.cal-week button.on .cal-count{ color:#111; }
+
+.cal-empty{ max-width:820px; }
+.cal-summary{ display:flex; align-items:center; flex-wrap:wrap; gap:8px 24px; margin-bottom:14px; font-size:14px; }
+.cal-toggle{ margin-left:auto; }
+
+/* Hours */
+.cal-hours{ list-style:none; margin:0; padding:0; max-width:1100px; border-top:1px solid #e0dcd8; }
+.cal-hours > li{
+  display:grid;
+  grid-template-columns:150px 1fr;
+  gap:16px;
+  padding:12px 0;
+  border-bottom:1px solid #e0dcd8;
+}
+.cal-hours > li.empty{ padding:8px 0; }
+.cal-hour{ display:flex; flex-direction:column; gap:6px; }
+.cal-time{ font-size:15px; font-weight:600; font-variant-numeric:tabular-nums; }
+.cal-hours > li.empty .cal-time{ color:#a7a39e; font-weight:400; }
+.cal-badge{
+  align-self:flex-start;
+  padding:2px 10px;
+  border-radius:999px;
+  background:#dff3db;
+  color:#1e7a12;
+  font-size:12px;
+  font-weight:600;
+}
+.cal-badge.zero{ background:transparent; color:#a7a39e; font-weight:400; padding:0; }
+.cal-hours > li.empty .cal-badge.zero{ display:none; }
+
+.cal-trips{ display:flex; flex-wrap:wrap; gap:8px; align-content:flex-start; }
+.cal-trip{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:2px;
+  min-width:190px;
+  padding:9px 14px 9px 16px;
+  border:1px solid #e0dcd8;
+  border-left:4px solid var(--green);
+  border-radius:10px;
+  background:#fff;
+  font-family:inherit;
+  text-align:left;
+  color:var(--ink);
+  cursor:pointer;
+}
+.cal-trip.continues{ border-left-style:dashed; background:#fafaf9; }
+.cal-trip:hover{ border-color:#1b1b1b; border-left-color:var(--green); }
+.cal-trip-name{ font-size:14px; font-weight:600; }
+.cal-trip-time{ font-size:13px; font-variant-numeric:tabular-nums; }
+.cal-trip-meta{ font-size:12px; color:var(--muted); }
+.cal-state{
+  margin-top:4px;
+  padding:1px 8px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:600;
+}
+.cal-state.ok{ background:#dff3db; color:#1e7a12; }
+.cal-state.running{ background:#dff3db; color:#1e7a12; }
+.cal-state.critical{ background:#fbdedb; color:#b42318; }
+.cal-state.warning{ background:#fdf0d2; color:#8a5a00; }
+.cal-state.info{ background:#e4e4e4; color:#55595d; }
+.cal-state.none{ background:#efefee; color:#8d8983; font-weight:400; }
+
+@media (max-width:760px){
+  .cal-hours > li{ grid-template-columns:1fr; gap:8px; }
+  .cal-week{ gap:4px; }
+  .cal-heading{ width:100%; margin:4px 0 0; }
+  .cal-toggle{ margin-left:0; }
+}
